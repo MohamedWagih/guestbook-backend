@@ -1,3 +1,4 @@
+var bcrypt = require("bcryptjs");
 const db = require("../models");
 const User = db.user;
 const { userSignUpSchema } = require("../schemas/user.schema");
@@ -22,7 +23,8 @@ exports.signup = async (req, res) => {
   }
 
   // create user
-  const user = new User({ name, email, password });
+  const hashedPassword = bcrypt.hashSync(password, 8);
+  const user = new User({ name, email, password: hashedPassword });
   user.save((error, user) => {
     if (error) {
       return res.status(500).send({ error: false, message: error });
