@@ -22,6 +22,9 @@ db.mongoose
     process.exit();
   });
 
+const userRoutes = require("./app/routes/user.routes");
+app.use("/users", userRoutes);
+
 app.get("/", (req, res) => {
   res.json({ message: "Welcome to Guestbook app!" });
 });
