@@ -1,0 +1,22 @@
+{
+  "name": "guestbook-backend",
+  "version": "1.0.0",
+  "description": "Guestbook Server",
+  "main": "server.js",
+  "scripts": {
+    "start": "nodemon server.js"
+  },
+  "repository": "https://github.com/MohamedWagih/guestbook-backend.git",
+  "author": {
+    "name": "Mohamed Wagih",
+    "email": "mohamed0wagih@gmail.com",
+    "url": "https://github.com/MohamedWagih"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.18.1",
+    "mongoose": "^6.4.1",
+    "nodemon": "^2.0.18"
+  }
+}
