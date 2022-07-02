@@ -2,6 +2,19 @@ const db = require("../models");
 const Message = db.message;
 const { messageAddSchema } = require("../schemas/message.schema");
 
+exports.getAll = async (req, res) => {
+  const messages = await Message.find()
+    .select(["author", "content", "date", "replies"])
+    .populate("author", ["name", "email"])
+    .populate({
+      path: "replies",
+      select: ["content", "author"],
+      populate: { path: "author", select: ["name", "email"] },
+    });
+
+  res.status(200).send({ error: false, data: { messages } });
+};
+
 exports.add = async (req, res) => {
   //validate message
   const validation = messageAddSchema.validate(req.body);
