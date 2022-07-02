@@ -5,6 +5,7 @@ const { verifyToken } = require("../middleware/auth");
 
 router.use(verifyToken);
 router.post("/", messageController.add);
+router.patch("/:messageId", messageController.edit);
 router.delete("/:messageId", messageController.delete);
 
 module.exports = router;
