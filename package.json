@@ -5,7 +5,7 @@
   "main": "server.js",
   "scripts": {
     "start": "nodemon server.js",
-    "test": "jest --config .\\jest.config.js  --i"
+    "test": "jest --config .\\jest.config.js"
   },
   "repository": "https://github.com/MohamedWagih/guestbook-backend.git",
   "author": {
@@ -19,6 +19,7 @@
     "cors": "^2.8.5",
     "express": "^4.18.1",
     "joi": "^17.6.0",
+    "jsonwebtoken": "^8.5.1",
     "mongoose": "^6.4.1",
     "nodemon": "^2.0.18"
   },
