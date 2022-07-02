@@ -15,7 +15,7 @@ db.mongoose
     useUnifiedTopology: true,
   })
   .then(() => {
-    console.log("Successfully connect to MongoDB.");
+    // console.log("Successfully connect to MongoDB.");
   })
   .catch((err) => {
     console.error("Connection error", err);
@@ -24,6 +24,8 @@ db.mongoose
 
 const userRoutes = require("./routes/user.routes");
 app.use("/users", userRoutes);
+const messageRoutes = require("./routes/message.routes");
+app.use("/messages", messageRoutes);
 
 app.get("/", (req, res) => {
   res.json({ message: "Welcome to Guestbook app!" });

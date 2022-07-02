@@ -14,6 +14,7 @@ exports.add = async (req, res) => {
   // add new message
   const { content } = req.body;
   const message = new Message({
+    author: req.user.id,
     content,
     replies: [],
   });
