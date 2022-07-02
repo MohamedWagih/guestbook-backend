@@ -10,6 +10,12 @@ const messageSchema = new mongoose.Schema({
     type: Date,
     default: Date.now(),
   },
+  replies: [
+    {
+      type: mongoose.Types.ObjectId,
+      ref: "Reply",
+    },
+  ],
 });
 
 const Message = mongoose.model("Message", messageSchema);
