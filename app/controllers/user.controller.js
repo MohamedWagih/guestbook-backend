@@ -1,12 +1,11 @@
 const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
-const authConfig = require("../config/auth.config");
 const db = require("../models");
 const User = db.user;
 const {
   userSignUpSchema,
   userSignInSchema,
 } = require("../schemas/user.schema");
+const generateJwtToken = require("../utils/generateJwtToken");
 const hashPassword = require("../utils/hashPassword");
 
 exports.signup = async (req, res) => {
@@ -72,7 +71,7 @@ exports.signin = async (req, res) => {
   }
 
   // generate token
-  const token = jwt.sign({ id: user._id }, authConfig.secret);
+  const token = generateJwtToken({ id: user._id });
 
   res
     .set({ "x-auth-token": token })
