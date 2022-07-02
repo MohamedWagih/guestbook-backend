@@ -30,3 +30,29 @@ exports.add = async (req, res) => {
     },
   });
 };
+
+exports.delete = async (req, res) => {
+  const { messageId } = req.params;
+
+  const message = await Message.findById(messageId);
+  if (!message) {
+    return res.status(400).send({
+      error: true,
+      message: "Message doesn't exist!",
+    });
+  }
+
+  if (message.author.toString() !== req.user.id) {
+    return res.status(401).send({
+      error: true,
+      message: "You are not authorized to delete this message!",
+    });
+  }
+
+  await Message.findByIdAndDelete(messageId);
+
+  res.status(200).send({
+    error: false,
+    message: "Message deleted successfully!",
+  });
+};
