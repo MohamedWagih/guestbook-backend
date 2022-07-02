@@ -1,7 +1,7 @@
 const request = require("supertest");
-const app = require("../index");
-const db = require("../models");
-const hashPassword = require("../utils/hashPassword");
+const app = require("../../index");
+const db = require("../../models");
+const hashPassword = require("../../utils/hashPassword");
 const User = db.user;
 
 describe("Test post /users/signin route", () => {

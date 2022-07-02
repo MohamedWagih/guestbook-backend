@@ -1,13 +1,14 @@
 const request = require("supertest");
-const app = require("../index");
-const db = require("../models");
-const generateJwtToken = require("../utils/generateJwtToken");
-const hashPassword = require("../utils/hashPassword");
+const app = require("../../index");
+const db = require("../../models");
+const generateJwtToken = require("../../utils/generateJwtToken");
+const hashPassword = require("../../utils/hashPassword");
 const Message = db.message;
 const User = db.user;
 
-describe("Test post /messages route", () => {
+describe("Test patch /messages route", () => {
   let token;
+  let savedMessage;
   beforeAll(async () => {
     await Message.deleteMany({});
     await User.deleteMany({});
@@ -18,26 +19,20 @@ describe("Test post /messages route", () => {
     });
     const savedUser = await user.save();
     token = generateJwtToken({ id: savedUser._id });
+    const message = new Message({
+      author: savedUser._id,
+      content: "Congrats!",
+    });
+    savedMessage = await message.save();
   });
   afterAll(async () => {
     await Message.deleteMany({});
     await User.deleteMany({});
   });
 
-  test("It should return 200 for valid message", () => {
-    request(app)
-      .post("/messages")
-      .set("x-access-token", token)
-      .send({
-        content: "Congrats!",
-      })
-      .then((response) => {
-        expect(response.statusCode).toBe(200);
-      });
-  });
   test("It should return 403 for no token", () => {
     request(app)
-      .post("/messages")
+      .patch(`/messages/${savedMessage._id}`)
       .send({
         content: "Congrats!",
       })
@@ -47,7 +42,7 @@ describe("Test post /messages route", () => {
   });
   test("It should return 401 for invalid token", () => {
     request(app)
-      .post("/messages")
+      .patch(`/messages/${savedMessage._id}`)
       .set("x-access-token", "token")
       .send({
         content: "Congrats!",
@@ -58,13 +53,24 @@ describe("Test post /messages route", () => {
   });
   test("It should return 400 for empty message", () => {
     request(app)
-      .post("/messages")
+      .patch(`/messages/${savedMessage._id}`)
       .set("x-access-token", token)
       .send({
         content: "",
       })
       .then((response) => {
         expect(response.statusCode).toBe(400);
+      });
+  });
+  test("It should return 200 for valid message update", () => {
+    request(app)
+      .patch(`/messages/${savedMessage._id}`)
+      .set("x-access-token", token)
+      .send({
+        content: "edited congrats!",
+      })
+      .then((response) => {
+        expect(response.statusCode).toBe(200);
       });
   });
 });

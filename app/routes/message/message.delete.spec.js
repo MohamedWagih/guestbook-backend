@@ -1,14 +1,15 @@
 const request = require("supertest");
-const app = require("../index");
-const db = require("../models");
-const generateJwtToken = require("../utils/generateJwtToken");
-const hashPassword = require("../utils/hashPassword");
+const app = require("../../index");
+const db = require("../../models");
+const generateJwtToken = require("../../utils/generateJwtToken");
+const hashPassword = require("../../utils/hashPassword");
 const Message = db.message;
 const User = db.user;
 
-describe("Test patch /messages route", () => {
+describe("Test delete /messages route", () => {
   let token;
   let savedMessage;
+
   beforeAll(async () => {
     await Message.deleteMany({});
     await User.deleteMany({});
@@ -25,6 +26,7 @@ describe("Test patch /messages route", () => {
     });
     savedMessage = await message.save();
   });
+
   afterAll(async () => {
     await Message.deleteMany({});
     await User.deleteMany({});
@@ -32,43 +34,31 @@ describe("Test patch /messages route", () => {
 
   test("It should return 403 for no token", () => {
     request(app)
-      .patch(`/messages/${savedMessage._id}`)
-      .send({
-        content: "Congrats!",
-      })
+      .delete(`/messages/${savedMessage._id}`)
       .then((response) => {
         expect(response.statusCode).toBe(403);
       });
   });
   test("It should return 401 for invalid token", () => {
     request(app)
-      .patch(`/messages/${savedMessage._id}`)
+      .delete(`/messages/${savedMessage._id}`)
       .set("x-access-token", "token")
-      .send({
-        content: "Congrats!",
-      })
       .then((response) => {
         expect(response.statusCode).toBe(401);
       });
   });
-  test("It should return 400 for empty message", () => {
+  test("It should return 404 for not exist message", () => {
     request(app)
-      .patch(`/messages/${savedMessage._id}`)
+      .delete("/messages/62c06db2d01b603ea10f05b5")
       .set("x-access-token", token)
-      .send({
-        content: "",
-      })
       .then((response) => {
-        expect(response.statusCode).toBe(400);
+        expect(response.statusCode).toBe(404);
       });
   });
-  test("It should return 200 for valid message update", () => {
+  test("It should return 200 for successfully delete message", () => {
     request(app)
-      .patch(`/messages/${savedMessage._id}`)
+      .delete(`/messages/${savedMessage._id}`)
       .set("x-access-token", token)
-      .send({
-        content: "edited congrats!",
-      })
       .then((response) => {
         expect(response.statusCode).toBe(200);
       });

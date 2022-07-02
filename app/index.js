@@ -22,9 +22,9 @@ db.mongoose
     process.exit();
   });
 
-const userRoutes = require("./routes/user.routes");
+const userRoutes = require("./routes/user/user.routes");
 app.use("/users", userRoutes);
-const messageRoutes = require("./routes/message.routes");
+const messageRoutes = require("./routes/message/message.routes");
 app.use("/messages", messageRoutes);
 
 app.get("/", (req, res) => {
