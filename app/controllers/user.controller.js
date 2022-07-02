@@ -7,6 +7,7 @@ const {
   userSignUpSchema,
   userSignInSchema,
 } = require("../schemas/user.schema");
+const hashPassword = require("../utils/hashPassword");
 
 exports.signup = async (req, res) => {
   // Validate input
@@ -28,7 +29,7 @@ exports.signup = async (req, res) => {
   }
 
   // create user
-  const hashedPassword = bcrypt.hashSync(password, 8);
+  const hashedPassword = hashPassword(password);
   const user = new User({ name, email, password: hashedPassword });
   user.save((error, user) => {
     if (error) {

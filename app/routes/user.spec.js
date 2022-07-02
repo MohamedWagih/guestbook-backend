@@ -1,7 +1,7 @@
-const bcrypt = require("bcryptjs");
 const request = require("supertest");
 const app = require("../index");
 const db = require("../models");
+const hashPassword = require("../utils/hashPassword");
 const User = db.user;
 
 describe("Test post /users/signup route", () => {
@@ -84,7 +84,7 @@ describe("Test post /users/signin route", () => {
     const user = User({
       name: "wagih",
       email: "wagih@test.com",
-      password: bcrypt.hashSync("Wagih@test", 8),
+      password: hashPassword("Wagih@test"),
     });
     await user.save();
   });
