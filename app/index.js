@@ -26,6 +26,8 @@ const userRoutes = require("./routes/user/user.routes");
 app.use("/users", userRoutes);
 const messageRoutes = require("./routes/message/message.routes");
 app.use("/messages", messageRoutes);
+const replyRoutes = require("./routes/reply/reply.routes");
+app.use("/replies", replyRoutes);
 
 app.get("/", (req, res) => {
   res.json({ message: "Welcome to Guestbook app!" });
