@@ -52,3 +52,9 @@ You can see **API** documentation [_here_](https://documenter.getpostman.com/vie
 - **joi** for schema validation to validate user input.
 - **bcryptjs** to hash user password.
 - **jsonwebtoken** to generate and verify JWT token.
+
+## Todo
+
+- [ ] Logger
+- [ ] Global error handling
+- [ ] System monitoring
