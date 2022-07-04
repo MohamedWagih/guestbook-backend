@@ -1,5 +1,6 @@
 const db = require("../models");
 const Message = db.message;
+const Reply = db.reply;
 const { messageAddSchema } = require("../schemas/message.schema");
 
 exports.getAll = async (req, res) => {
@@ -108,8 +109,12 @@ exports.delete = async (req, res) => {
     });
   }
 
-  await Message.findByIdAndDelete(messageId);
+  const deletedMessage = await Message.findByIdAndDelete(messageId);
 
+  for (let idx = 0; idx < deletedMessage.replies.length; idx++) {
+    const replyId = deletedMessage.replies[idx];
+    await Reply.findByIdAndDelete(replyId);
+  }
   res.status(200).send({
     error: false,
     message: "Message deleted successfully!",
